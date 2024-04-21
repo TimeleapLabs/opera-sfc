@@ -3,7 +3,6 @@ pragma solidity ^0.5.0;
 import "./ERC20.sol";
 import "./MinterRole.sol";
 
-
 /**
  * @title ERC20Mintable
  * @dev ERC20 minting logic
@@ -34,12 +33,7 @@ contract ERC20Mintable is ERC20, MinterRole {
     function mint(
         address to,
         uint256 amount
-    )
-    public
-    onlyMinter
-    onlyBeforeMintingFinished
-    returns (bool)
-    {
+    ) public onlyMinter onlyBeforeMintingFinished returns (bool) {
         _mint(to, amount);
         return true;
     }
@@ -49,10 +43,10 @@ contract ERC20Mintable is ERC20, MinterRole {
      * @return True if the operation was successful.
      */
     function finishMinting()
-    public
-    onlyMinter
-    onlyBeforeMintingFinished
-    returns (bool)
+        public
+        onlyMinter
+        onlyBeforeMintingFinished
+        returns (bool)
     {
         _mintingFinished = true;
         emit MintingFinished();

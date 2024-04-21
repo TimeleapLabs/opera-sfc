@@ -48,7 +48,10 @@ contract UnitTestSFC is SFC, UnitTestSFCBase {
 }
 
 contract UnitTestSFCLib is SFCLib, UnitTestSFCBase {
-    function highestLockupEpoch(address delegator, uint256 validatorID) external view returns (uint256) {
+    function highestLockupEpoch(
+        address delegator,
+        uint256 validatorID
+    ) external view returns (uint256) {
         return _highestLockupEpoch(delegator, validatorID);
     }
 
@@ -65,7 +68,16 @@ contract UnitTestSFCLib is SFCLib, UnitTestSFCBase {
 }
 
 contract UnitTestNetworkInitializer {
-    function initializeAll(uint256 sealedEpoch, uint256 totalSupply, address payable _sfc, address _lib, address _auth, address _driver, address _evmWriter, address _owner) external {
+    function initializeAll(
+        uint256 sealedEpoch,
+        uint256 totalSupply,
+        address payable _sfc,
+        address _lib,
+        address _auth,
+        address _driver,
+        address _evmWriter,
+        address _owner
+    ) external {
         NodeDriver(_driver).initialize(_auth, _evmWriter);
         NodeDriverAuth(_auth).initialize(_sfc, _driver, _owner);
 
@@ -88,30 +100,87 @@ contract UnitTestNetworkInitializer {
         consts.updateGasPriceBalancingCounterweight(6 * 60 * 60);
         consts.transferOwnership(_owner);
 
-        SFCUnitTestI(_sfc).initialize(sealedEpoch, totalSupply, _auth, _lib, address(consts), _owner);
+        SFCUnitTestI(_sfc).initialize(
+            sealedEpoch,
+            totalSupply,
+            _auth,
+            _lib,
+            address(consts),
+            _owner
+        );
         selfdestruct(address(0));
     }
 }
 
 interface SFCUnitTestI {
-
     function currentSealedEpoch() external view returns (uint256);
 
-    function getEpochSnapshot(uint256) external view returns (uint256 endTime, uint256 epochFee, uint256 totalBaseRewardWeight, uint256 totalTxRewardWeight, uint256 _baseRewardPerSecond, uint256 totalStake, uint256 totalSupply);
+    function getEpochSnapshot(
+        uint256
+    )
+        external
+        view
+        returns (
+            uint256 endTime,
+            uint256 epochFee,
+            uint256 totalBaseRewardWeight,
+            uint256 totalTxRewardWeight,
+            uint256 _baseRewardPerSecond,
+            uint256 totalStake,
+            uint256 totalSupply
+        );
 
-    function getLockupInfo(address, uint256) external view returns (uint256 lockedStake, uint256 fromEpoch, uint256 endTime, uint256 duration);
+    function getLockupInfo(
+        address,
+        uint256
+    )
+        external
+        view
+        returns (
+            uint256 lockedStake,
+            uint256 fromEpoch,
+            uint256 endTime,
+            uint256 duration
+        );
 
     function getStake(address, uint256) external view returns (uint256);
 
-    function getStashedLockupRewards(address, uint256) external view returns (uint256 lockupExtraReward, uint256 lockupBaseReward, uint256 unlockedReward);
+    function getStashedLockupRewards(
+        address,
+        uint256
+    )
+        external
+        view
+        returns (
+            uint256 lockupExtraReward,
+            uint256 lockupBaseReward,
+            uint256 unlockedReward
+        );
 
-    function getValidator(uint256) external view returns (uint256 status, uint256 deactivatedTime, uint256 deactivatedEpoch, uint256 receivedStake, uint256 createdEpoch, uint256 createdTime, address auth);
+    function getValidator(
+        uint256
+    )
+        external
+        view
+        returns (
+            uint256 status,
+            uint256 deactivatedTime,
+            uint256 deactivatedEpoch,
+            uint256 receivedStake,
+            uint256 createdEpoch,
+            uint256 createdTime,
+            address auth
+        );
 
     function getValidatorID(address) external view returns (uint256);
 
     function getValidatorPubkey(uint256) external view returns (bytes memory);
 
-    function getWithdrawalRequest(address, uint256, uint256) external view returns (uint256 epoch, uint256 time, uint256 amount);
+    function getWithdrawalRequest(
+        address,
+        uint256,
+        uint256
+    ) external view returns (uint256 epoch, uint256 time, uint256 amount);
 
     function isOwner() external view returns (bool);
 
@@ -127,7 +196,10 @@ interface SFCUnitTestI {
 
     function stakeTokenizerAddress() external view returns (address);
 
-    function stashedRewardsUntilEpoch(address, uint256) external view returns (uint256);
+    function stashedRewardsUntilEpoch(
+        address,
+        uint256
+    ) external view returns (uint256);
 
     function targetGasPowerPerSecond() external view returns (uint256);
 
@@ -151,23 +223,49 @@ interface SFCUnitTestI {
 
     function constsAddress() external view returns (address);
 
-    function getEpochValidatorIDs(uint256 epoch) external view returns (uint256[] memory);
+    function getEpochValidatorIDs(
+        uint256 epoch
+    ) external view returns (uint256[] memory);
 
-    function getEpochReceivedStake(uint256 epoch, uint256 validatorID) external view returns (uint256);
+    function getEpochReceivedStake(
+        uint256 epoch,
+        uint256 validatorID
+    ) external view returns (uint256);
 
-    function getEpochAccumulatedRewardPerToken(uint256 epoch, uint256 validatorID) external view returns (uint256);
+    function getEpochAccumulatedRewardPerToken(
+        uint256 epoch,
+        uint256 validatorID
+    ) external view returns (uint256);
 
-    function getEpochAccumulatedUptime(uint256 epoch, uint256 validatorID) external view returns (uint256);
+    function getEpochAccumulatedUptime(
+        uint256 epoch,
+        uint256 validatorID
+    ) external view returns (uint256);
 
-    function getEpochAccumulatedOriginatedTxsFee(uint256 epoch, uint256 validatorID) external view returns (uint256);
+    function getEpochAccumulatedOriginatedTxsFee(
+        uint256 epoch,
+        uint256 validatorID
+    ) external view returns (uint256);
 
-    function getEpochOfflineTime(uint256 epoch, uint256 validatorID) external view returns (uint256);
+    function getEpochOfflineTime(
+        uint256 epoch,
+        uint256 validatorID
+    ) external view returns (uint256);
 
-    function getEpochOfflineBlocks(uint256 epoch, uint256 validatorID) external view returns (uint256);
+    function getEpochOfflineBlocks(
+        uint256 epoch,
+        uint256 validatorID
+    ) external view returns (uint256);
 
-    function rewardsStash(address delegator, uint256 validatorID) external view returns (uint256);
+    function rewardsStash(
+        address delegator,
+        uint256 validatorID
+    ) external view returns (uint256);
 
-    function getLockedStake(address delegator, uint256 toValidatorID) external view returns (uint256);
+    function getLockedStake(
+        address delegator,
+        uint256 toValidatorID
+    ) external view returns (uint256);
 
     function createValidator(bytes calldata pubkey) external payable;
 
@@ -175,7 +273,11 @@ interface SFCUnitTestI {
 
     function delegate(uint256 toValidatorID) external payable;
 
-    function undelegate(uint256 toValidatorID, uint256 wrID, uint256 amount) external;
+    function undelegate(
+        uint256 toValidatorID,
+        uint256 wrID,
+        uint256 amount
+    ) external;
 
     function isSlashed(uint256 validatorID) external view returns (bool);
 
@@ -183,7 +285,10 @@ interface SFCUnitTestI {
 
     function deactivateValidator(uint256 validatorID, uint256 status) external;
 
-    function pendingRewards(address delegator, uint256 toValidatorID) external view returns (uint256);
+    function pendingRewards(
+        address delegator,
+        uint256 toValidatorID
+    ) external view returns (uint256);
 
     function stashRewards(address delegator, uint256 toValidatorID) external;
 
@@ -191,13 +296,22 @@ interface SFCUnitTestI {
 
     function restakeRewards(uint256 toValidatorID) external;
 
-    function offlinePenaltyThreshold() external view returns (uint256 blocksNum, uint256 time);
+    function offlinePenaltyThreshold()
+        external
+        view
+        returns (uint256 blocksNum, uint256 time);
 
     function updateBaseRewardPerSecond(uint256 value) external;
 
-    function updateOfflinePenaltyThreshold(uint256 blocksNum, uint256 time) external;
+    function updateOfflinePenaltyThreshold(
+        uint256 blocksNum,
+        uint256 time
+    ) external;
 
-    function updateSlashingRefundRatio(uint256 validatorID, uint256 refundRatio) external;
+    function updateSlashingRefundRatio(
+        uint256 validatorID,
+        uint256 refundRatio
+    ) external;
 
     function updateStakeTokenizerAddress(address addr) external;
 
@@ -205,25 +319,74 @@ interface SFCUnitTestI {
 
     function burnFTM(uint256 amount) external;
 
-    function sealEpoch(uint256[] calldata offlineTime, uint256[] calldata offlineBlocks, uint256[] calldata uptimes, uint256[] calldata originatedTxsFee, uint256 epochGas) external;
+    function sealEpoch(
+        uint256[] calldata offlineTime,
+        uint256[] calldata offlineBlocks,
+        uint256[] calldata uptimes,
+        uint256[] calldata originatedTxsFee,
+        uint256 epochGas
+    ) external;
 
     function sealEpochValidators(uint256[] calldata nextValidatorIDs) external;
 
-    function isLockedUp(address delegator, uint256 toValidatorID) external view returns (bool);
+    function isLockedUp(
+        address delegator,
+        uint256 toValidatorID
+    ) external view returns (bool);
 
-    function getUnlockedStake(address delegator, uint256 toValidatorID) external view returns (uint256);
+    function getUnlockedStake(
+        address delegator,
+        uint256 toValidatorID
+    ) external view returns (uint256);
 
-    function lockStake(uint256 toValidatorID, uint256 lockupDuration, uint256 amount) external;
+    function lockStake(
+        uint256 toValidatorID,
+        uint256 lockupDuration,
+        uint256 amount
+    ) external;
 
-    function relockStake(uint256 toValidatorID, uint256 lockupDuration, uint256 amount) external;
+    function relockStake(
+        uint256 toValidatorID,
+        uint256 lockupDuration,
+        uint256 amount
+    ) external;
 
-    function unlockStake(uint256 toValidatorID, uint256 amount) external returns (uint256);
+    function unlockStake(
+        uint256 toValidatorID,
+        uint256 amount
+    ) external returns (uint256);
 
-    function initialize(uint256 sealedEpoch, uint256 _totalSupply, address nodeDriver, address lib, address consts, address _owner) external;
+    function initialize(
+        uint256 sealedEpoch,
+        uint256 _totalSupply,
+        address nodeDriver,
+        address lib,
+        address consts,
+        address _owner
+    ) external;
 
-    function setGenesisValidator(address auth, uint256 validatorID, bytes calldata pubkey, uint256 status, uint256 createdEpoch, uint256 createdTime, uint256 deactivatedEpoch, uint256 deactivatedTime) external;
+    function setGenesisValidator(
+        address auth,
+        uint256 validatorID,
+        bytes calldata pubkey,
+        uint256 status,
+        uint256 createdEpoch,
+        uint256 createdTime,
+        uint256 deactivatedEpoch,
+        uint256 deactivatedTime
+    ) external;
 
-    function setGenesisDelegation(address delegator, uint256 toValidatorID, uint256 stake, uint256 lockedStake, uint256 lockupFromEpoch, uint256 lockupEndTime, uint256 lockupDuration, uint256 earlyUnlockPenalty, uint256 rewards) external;
+    function setGenesisDelegation(
+        address delegator,
+        uint256 toValidatorID,
+        uint256 stake,
+        uint256 lockedStake,
+        uint256 lockupFromEpoch,
+        uint256 lockupEndTime,
+        uint256 lockupDuration,
+        uint256 earlyUnlockPenalty,
+        uint256 rewards
+    ) external;
 
     function _syncValidator(uint256 validatorID, bool syncPubkey) external;
 
@@ -235,7 +398,10 @@ interface SFCUnitTestI {
 
     function advanceTime(uint256) external;
 
-    function highestLockupEpoch(address, uint256) external view returns (uint256);
+    function highestLockupEpoch(
+        address,
+        uint256
+    ) external view returns (uint256);
 
     function enableNonNodeCalls() external;
 
@@ -247,5 +413,3 @@ interface SFCUnitTestI {
 
     function voteBookAddress() external view returns (address);
 }
-
-

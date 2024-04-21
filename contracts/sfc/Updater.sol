@@ -8,7 +8,11 @@ interface GovI {
 }
 
 interface VoteBookI {
-    function initialize(address _owner, address _gov, uint256 _maxProposalsPerVoter) external;
+    function initialize(
+        address _owner,
+        address _gov,
+        uint256 _maxProposalsPerVoter
+    ) external;
 }
 
 interface GovVersion {
@@ -24,7 +28,15 @@ contract Updater {
     address public voteBook;
     address public owner;
 
-    constructor(address _sfcFrom, address _sfcLib, address _sfcConsts, address _govTo, address _govFrom, address _voteBook, address _owner) public {
+    constructor(
+        address _sfcFrom,
+        address _sfcLib,
+        address _sfcConsts,
+        address _govTo,
+        address _govFrom,
+        address _voteBook,
+        address _owner
+    ) public {
         sfcFrom = _sfcFrom;
         sfcLib = _sfcLib;
         sfcConsts = _sfcConsts;
@@ -33,7 +45,16 @@ contract Updater {
         voteBook = _voteBook;
         owner = _owner;
         address payable sfcTo = 0xFC00FACE00000000000000000000000000000000;
-        require(sfcFrom != address(0) && sfcLib != address(0) && sfcConsts != address(0) && govTo != address(0) && govFrom != address(0) && voteBook != address(0) && owner != address(0), "0 address");
+        require(
+            sfcFrom != address(0) &&
+                sfcLib != address(0) &&
+                sfcConsts != address(0) &&
+                govTo != address(0) &&
+                govFrom != address(0) &&
+                voteBook != address(0) &&
+                owner != address(0),
+            "0 address"
+        );
         require(Version(sfcTo).version() == "303", "SFC already updated");
         require(Version(sfcFrom).version() == "304", "wrong SFC version");
         require(GovVersion(govTo).version() == "0001", "gov already updated");
@@ -64,7 +85,9 @@ contract Updater {
 
         VoteBookI(voteBook).initialize(owner, govTo, 30);
 
-        NodeDriverAuth nodeAuth = NodeDriverAuth(0xD100ae0000000000000000000000000000000000);
+        NodeDriverAuth nodeAuth = NodeDriverAuth(
+            0xD100ae0000000000000000000000000000000000
+        );
         nodeAuth.upgradeCode(sfcTo, sfcFrom);
         SFCI(sfcTo).updateConstsAddress(sfcConsts);
         SFCI(sfcTo).updateVoteBookAddress(voteBook);

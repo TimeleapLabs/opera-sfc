@@ -15,6 +15,7 @@ Build output can be found in `build/`
 1. `make test`
 
 If everything is all right, it should output something along this:
+
 ```
   Contract: SFC
     Nde
@@ -92,7 +93,7 @@ If everything is all right, it should output something along this:
 
   Contract: SFC
     Returns Validator
-      ✓ Should returns Validator' status 
+      ✓ Should returns Validator' status
       ✓ Should returns Validator' Deactivated Time
       ✓ Should returns Validator' Deactivated Epoch
       ✓ Should returns Validator's Received Stake
@@ -138,7 +139,7 @@ If everything is all right, it should output something along this:
       ✓ should return the Epoch Accumulated Reward Per Token
       ✓ should return the Epoch Accumulated Uptime
       ✓ should return the Epoch Accumulated Originated Txs Fee
-      ✓ should return the Epoch Offline time 
+      ✓ should return the Epoch Offline time
       ✓ should return Epoch Offline Blocks
     Unlock features
       ✓ should fail if trying to unlock stake if not lockedup
