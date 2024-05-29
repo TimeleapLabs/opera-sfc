@@ -10,8 +10,12 @@ contract NativeMinter is Initializable, Ownable {
     using SafeMath for uint256;
 
     mapping(address => bool) public minters;
+
     SFCI public sfc;
     EVMWriter public evmWriter;
+
+    event Mint(address indexed to, uint256 amount);
+    event Burn(address indexed from, uint256 amount);
 
     modifier onlyMinter() {
         require(minters[msg.sender], "caller is not a minter");
@@ -36,15 +40,27 @@ contract NativeMinter is Initializable, Ownable {
         minters[minter] = false;
     }
 
-    function mintNativeToken(address to, uint256 amount) external onlyMinter  {
+    function mintNativeToken(address to, uint256 amount) external onlyMinter {
         // balance will be increased after the transaction is processed
         evmWriter.setBalance(to, address(to).balance.add(amount));
         sfc.incSupply(amount);
+        emit Mint(to, amount);
     }
 
     function burnNativeToken(address from, uint256 amount) external onlyMinter {
         // balance will be decreased after the transaction is processed
         evmWriter.setBalance(from, address(from).balance.sub(amount));
         sfc.decSupply(amount);
+        emit Burn(from, amount);
     }
+}
+
+interface INativeMinter {
+    function addMinter(address minter) external;
+
+    function removeMinter(address minter) external;
+
+    function mintNativeToken(address to, uint256 amount) external;
+
+    function burnNativeToken(address from, uint256 amount) external;
 }

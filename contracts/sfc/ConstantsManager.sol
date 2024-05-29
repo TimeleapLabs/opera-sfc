@@ -48,8 +48,8 @@ contract ConstantsManager is Ownable {
     //    }
 
     function updateMinSelfStake(uint256 v) external onlyOwner {
-        require(v >= 100000 * 1e18, "too small value");
-        require(v <= 10000000 * 1e18, "too large value");
+        //require(v >= 100000 * 1e18, "too small value");
+        //require(v <= 10000000 * 1e18, "too large value");
         minSelfStake = v;
     }
 
@@ -81,14 +81,14 @@ contract ConstantsManager is Ownable {
     }
 
     function updateMinLockupDuration(uint256 v) external onlyOwner {
-        require(v >= 86400, "too small value");
-        require(v <= 86400 * 30, "too large value");
+        //require(v >= 86400, "too small value");
+        //require(v <= 86400 * 30, "too large value");
         minLockupDuration = v;
     }
 
     function updateMaxLockupDuration(uint256 v) external onlyOwner {
-        require(v >= 86400 * 30, "too small value");
-        require(v <= 86400 * 1460, "too large value");
+        //require(v >= 86400 * 30, "too small value");
+        //require(v <= 86400 * 1460, "too large value");
         maxLockupDuration = v;
     }
 
