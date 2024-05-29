@@ -11,6 +11,7 @@ contract NetworkInitializer {
     function initializeAll(
         uint256 sealedEpoch,
         uint256 totalSupply,
+        uint256 minSelfStake,
         address payable _sfc,
         address _lib,
         address _auth,
@@ -25,7 +26,7 @@ contract NetworkInitializer {
 
         ConstantsManager consts = new ConstantsManager();
         consts.initialize();
-        consts.updateMinSelfStake(500000 * 1e18);
+        consts.updateMinSelfStake(minSelfStake);
         consts.updateMaxDelegatedRatio(16 * Decimal.unit());
         consts.updateValidatorCommission((15 * Decimal.unit()) / 100);
         consts.updateBurntFeeShare((20 * Decimal.unit()) / 100);
